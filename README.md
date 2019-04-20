@@ -195,23 +195,23 @@ def dbscan(data, min_pts, eps, dist_func=euclidean):
 We are going to test our algorithm on the following two patters: half-moons and
 circle in a circle.
 
-![sklearn.dataset.make_moons](/img/raw_moons.png)
+![sklearn.dataset.make_moons](/assets/img/raw_moons.png)
 
-![sklearn.dataset.make_circles](/img/raw_circles.png)
+![sklearn.dataset.make_circles](/assets/img/raw_circles.png)
 
 If we were to naively apply K-Means we wouldn't be able to predict these two groups with much satisfaction. 
 
-![k-means moons](/img/kmeans_moon.png)
+![k-means moons](/assets/img/kmeans_moon.png)
 
-![k-means circles](/img/kmeans_circles.png)
+![k-means circles](/assets/img/kmeans_circles.png)
 
 K-means struggles with the moons because they are not [convex](https://en.wikipedia.org/wiki/Convex_set) which is one of 
 K-means assumptions. The problem with the circles is the centroids cannot overlap and if they did it would return a single cluster. 
 However, by applying DBSCAN which doesn't assume the shape of the data but proxmity between points we get the following results:
 
-![my moons](/img/my_dbscan.png)
+![my moons](/assets/img/my_dbscan.png)
 
-![my moons](/img/my_circles.png)
+![my moons](/assets/img/my_circles.png)
 
 ![Like a glove](https://media.giphy.com/media/YpRuexuyaJQ0U/giphy.gif)  
 
@@ -245,7 +245,7 @@ Adjusted Mutual Information: 0.947
 Silhouette Coefficient: 0.225
 ```
 
-![Sci-Kit learn DBSCAN](/img/sk.png)
+![Sci-Kit learn DBSCAN](/assets/img/sk.png)
 
 Sci-Kit Learn example adapted from [here](http://scikit-learn.org/stable/auto_examples/cluster/plot_dbscan.html).
 ## Caveats
