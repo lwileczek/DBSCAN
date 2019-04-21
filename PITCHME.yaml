@@ -6,6 +6,6 @@ code-line-numbers : true
 title : "DBSCAN - A New Way to Cluster"
 description : "Density based clustering and how to do it"
 
-# highlight: atom-one-dark
+highlight: atom-one-light
 
-highlight: atelier-forest-light
+chart : true
