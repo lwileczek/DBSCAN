@@ -7,5 +7,3 @@ title : "DBSCAN - A New Way to Cluster"
 description : "Density based clustering and how to do it"
 
 highlight: atom-one-light
-
-charts : true
