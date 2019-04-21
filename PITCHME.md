@@ -233,7 +233,9 @@ def dbscan(data, min_pts, eps, dist_func=euclidean):
 
 ---
 @title[example]
-## Example time
+@snap[north]
+@size[1.15em](Example Time)
+@snapend
 
 @snap[west span-50]
 ![](assets/img/raw_circles.png)
@@ -246,7 +248,9 @@ def dbscan(data, min_pts, eps, dist_func=euclidean):
 +++
 @title[e.g. k-means]
 
-## K-Means failure
+@snap[north]
+@size[1.15em](K-Means Failure)
+@snapend
 
 @snap[west span-50]
 ![](assets/img/kmeans_circles.png)
@@ -259,7 +263,9 @@ def dbscan(data, min_pts, eps, dist_func=euclidean):
 +++  
 @title[e.g. dbscan]
 
-## DBSCAN
+@snap[north]
+@size[1.15em](DBSCAN Results)
+@snapend
 
 @snap[west span-50]
 ![](assets/img/my_circles.png)
@@ -272,10 +278,11 @@ def dbscan(data, min_pts, eps, dist_func=euclidean):
 +++ 
 @title[e.g. sci-kit]
 
-## Sci-Kit Learn 
+@snap[north]
+@size[1.15em](Sci-Kit Learn)
+@snapend 
 
-@snap[west span-50]  
-```python
+```python 
 import numpy as np
 from sklearn.cluster import DBSCAN
 from sklearn.preprocessing import StandardScaler
@@ -290,7 +297,19 @@ labels = db.labels_
 # Number of clusters in labels, ignoring noise if present.
 n_clusters_ = len(set(labels)) - (1 if -1 in labels else 0)
 ```
-@snapend 
+
++++
+@title[sk continue]
+
+@snap[east span-50]
+Estimated number of clusters: 2  
+Homogeneity: 0.995 
+Completeness: 0.947   
+V-measure: 0.970  
+Adjusted Rand Index: 0.987  
+Adjusted Mutual Information: 0.947  
+Silhouette Coefficient: 0.225  
+@snapend
 
 @snap[east span-50]
 ![](assets/img/sk.png)
@@ -326,7 +345,7 @@ Note:
   This effect, however, is also present in any other algorithm based on Euclidean distance.
 
 
- ---
+---
 @title[Future Reading]
 
 ## Futher Reading
