@@ -40,8 +40,8 @@ Why I don't like K-Means:
 @snapend
 
 @snap[west text-left span-50]
-DBSCAN is an unsupervised density-based clustering algorithm, meaning that 
-the algorithm focuses on the distance between each point and the count of neighbors rather than the distance to a centroid like K-Means.
+unsupervised density-based clustering algorithm focusing on 
+the distance between each point and the count of neighbors rather than the distance to a centroid.
 @snapend
 
 @snap[east span-50]
@@ -87,11 +87,27 @@ Approaching the algorithm this way instead of calculating all of the distances
 at once will help to save memory.
 
 +++
+@title[overview continued...]
+
+## Overview Continued
+We will follow the following ideas:
+  
+@ul  
+  1. Pick a point to start with
+  2. Find it's neighbors
+  3. Identify if it is a core point
+  4. Check if its neighbors are core points
+  5. connect the entire neighborhood into a cluster
+@ulend
+
+---
+
 @title[Fun Fact 0]
 
 ### Fun fact time
 
-Eps stands for epsilon, the Greek letter, which is used in mathematics to represent a region around an object. An arbitrary but common choice.
+Eps stands for epsilon, the Greek letter, which is used in mathematics to represent a region around an object. 
+An arbitrary but common choice.
 
 
 --- 
@@ -127,8 +143,7 @@ def dbscan(data, min_pts, eps, dist_func=euclidean):
    """
    C = 0  # cluster counter
    labels = {}  # Dictionary to hold all of the clusters
-   # check to see if we visited this point
-   visited = np.zeros(len(data))
+   visited = np.zeros(len(data))  # for tracking
 ```
 
 Note:
@@ -142,7 +157,7 @@ inital values and set default distance
 
 ```python
 for idx, point in enumerate(data):
-   # If already seached this point move on
+   # If already visited this point move on
    if visited[idx] == 1:
        continue
    visited[idx] = 1  # have now visited this point
@@ -156,7 +171,9 @@ for idx, point in enumerate(data):
 
 #### Group the clusters
 @[1,2]
-@[3-14]
+@[3-6]
+@[7-9]
+@[10-14]
 
 ```python
 if len(neighbors) < min_pts:
@@ -164,21 +181,24 @@ if len(neighbors) < min_pts:
 else:
    C += 1
    labels.setdefault(C, []).append(idx)
-   neighbors.remove(idx)  # Already been checked. Will be added below
+   neighbors.remove(idx) # don't visit again
    for q in neighbors:
        if visited[q] == 1:
            continue
        visited[q] = 1
-       q_neighbors = find_neighbors(data, dist_func, data[q, :], eps)
+       q_neighbors = find_neighbors(data, 
+          dist_func, data[q, :], eps)
        if len(q_neighbors) >= min_pts:
-           neighbors.extend(q_neighbors)  # extend the search
-       labels[C].append(q)
+           # extend the search
+           neighbors.extend(q_neighbors)
+       labels[C].append(q)  # add to cluster
 ```
 
 +++
 @title[Full function]
-@span[north]
-The whole shabang
+
+@span[north]  
+@size[1.25em](The whole shabang)
 @spanend
 
 ```python
@@ -215,11 +235,15 @@ def dbscan(data, min_pts, eps, dist_func=euclidean):
 ## Example time
 
 @span[west span-50]
+
 ![](assets/img/raw_circles.png)
+
 @spanend
 
 @span[east span-50]
+
 ![](assets/img/raw_moons.png)
+
 @spanend
 
 +++
@@ -228,11 +252,15 @@ def dbscan(data, min_pts, eps, dist_func=euclidean):
 ## K-Means failure
 
 @span[west span-50]
+
 ![](assets/img/kmeans_circles.png)
+
 @spanend
 
 @span[east span-50]
+
 ![](assets/img/kmeans_moon.png)
+
 @spanend
 
 +++
@@ -241,11 +269,15 @@ def dbscan(data, min_pts, eps, dist_func=euclidean):
 ## DBSCAN
 
 @span[west span-50]
+
 ![](assets/img/my_circles.png)
+
 @spanend
 
 @span[east span-50]
+
 ![](assets/img/my_dbscan.png)
+
 @spanend
 
 +++
@@ -253,7 +285,7 @@ def dbscan(data, min_pts, eps, dist_func=euclidean):
 
 ## Sci-Kit Learn 
 
-@span[west span-50]
+@span[west span-50]  
 ```python
 import numpy as np
 from sklearn.cluster import DBSCAN
@@ -269,16 +301,18 @@ labels = db.labels_
 # Number of clusters in labels, ignoring noise if present.
 n_clusters_ = len(set(labels)) - (1 if -1 in labels else 0)
 ```
-@spanend
+@spanend. 
 
 @span[east span-50]
+
 ![](assets/img/sk.png)
+
 @spanend
 
-@span[south-east span-35]
+@span[south-east span-35] 
 @size[0.65em](
 Sci-Kit Learn example adapted from
-[here](http://scikit-learn.org/stable/auto_examples/cluster/plot_dbscan.html))
+[here](http://scikit-learn.org/stable/auto_examples/cluster/plot_dbscan.html))  
 @spanend
 
 ---
@@ -293,8 +327,16 @@ Sci-Kit Learn example adapted from
   distance threshold ε can be difficult
   
 Note: 
-  - border points that are reachable from more than one cluster can be part of either cluster, depending on the order the data are processed. For most data sets and domains, this situation fortunately does not arise often and has little impact on the clustering result: both on core points and noise points, DBSCAN is deterministic. DBSCAN* is a variation that treats border points as noise, and this way achieves a fully deterministic result as well as a more consistent statistical interpretation of density-connected components.
-    - The most common distance metric used is Euclidean distance. Especially for high-dimensional data, this metric can be rendered almost useless due to the so-called "Curse of dimensionality", making it difficult to find an appropriate value for ε. This effect, however, is also present in any other algorithm based on Euclidean distance.
+  - border points that are reachable from more than one cluster can be part of either cluster, 
+  depending on the order the data are processed. For most data sets and domains, 
+  this situation fortunately does not arise often and has little impact on the clustering result: 
+  both on core points and noise points, DBSCAN is deterministic. DBSCAN* is a variation 
+  that treats border points as noise, and this way achieves a fully deterministic result 
+  as well as a more consistent statistical interpretation of density-connected components.
+  - The most common distance metric used is Euclidean distance. 
+  Especially for high-dimensional data, this metric can be rendered almost useless due to the so-called 
+  "Curse of dimensionality", making it difficult to find an appropriate value for ε. 
+  This effect, however, is also present in any other algorithm based on Euclidean distance.
 
 
  ---
