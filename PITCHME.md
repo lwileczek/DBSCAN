@@ -35,9 +35,9 @@ Why I don't like K-Means:
 ---
 @title[What is DBSCAN]
 
-### What is DBSCAN?
-
-<br>
+@snap[north headline span-80]
+@size[1.25em](What is DBSCAN?)
+@snapend
 
 @snap[west text-left span-50]
 DBSCAN is an unsupervised density-based clustering algorithm, meaning that 
@@ -104,29 +104,31 @@ Eps stands for epsilon, the Greek letter, which is used in mathematics to repres
 
 ```python
 def euclidean(x, y):
-    """
-    Calculate the euclidean distance between two vectors
-    """
-    return np.sqrt(np.sum((x-y)**2))
+   """
+   Calculate the euclidean distance between two vectors
+   """
+   return np.sqrt(np.sum((x-y)**2))
 
 def find_neighbors(db, dist_func2, p, e):
-    """
-    return the indecies of all points within epsilon of p
-    """
-    return [idx for idx, q in enumerate(db) if dist_func2(p,q) <= e]
+   """
+   return the indecies of all points within epsilon of p
+   """
+   return [idx for idx, q in enumerate(db) if dist_func2(p,q) <= e]
 ```
 
 +++
 @title[main function]
 
+#### initiate the function and variables
 ```
 def dbscan(data, min_pts, eps, dist_func=euclidean):
-    """
-    Run the DBSCAN clustering algorithm
-    """
-    C = 0                          # cluster counter
-    labels = {}                    # Dictionary to hold all of the clusters
-    visited = np.zeros(len(data))  # check to see if we visited this point
+   """
+   Run the DBSCAN clustering algorithm
+   """
+   C = 0  # cluster counter
+   labels = {}  # Dictionary to hold all of the clusters
+   # check to see if we visited this point
+   visited = np.zeros(len(data))
 ```
 
 Note:
@@ -136,34 +138,178 @@ inital values and set default distance
 
 @title[for-loop]
 
+#### Track which nodes we have checked
+
 ```python
 for idx, point in enumerate(data):
-    # If already seached this point move on
-    if visited[idx] == 1:
-        continue
-    visited[idx] = 1  # have now visited this point
-    # all of point P's neighbors
-    neighbors = find_neighbors(data, dist_func, point, eps)
+   # If already seached this point move on
+   if visited[idx] == 1:
+       continue
+   visited[idx] = 1  # have now visited this point
+   # all of point P's neighbors
+   neighbors = find_neighbors(data, dist_func, point, eps)
 ```
 
 +++
 
 @title[if/then]
 
+#### Group the clusters
+@[1,2]
+@[3-14]
+
 ```python
 if len(neighbors) < min_pts:
-            labels.setdefault('noise', []).append(idx)
-        else:
-            C += 1
-            labels.setdefault(C, []).append(idx)
-            neighbors.remove(idx)  # Already been checked. Will be added below
-            for q in neighbors:
-                if visited[q] == 1:
-                    continue
-                visited[q] = 1
-                q_neighbors = find_neighbors(data, dist_func, data[q, :], eps)
-                if len(q_neighbors) >= min_pts:
-                    neighbors.extend(q_neighbors)  # extend the search
-                labels[C].append(q)
+   labels.setdefault('noise', []).append(idx)
+else:
+   C += 1
+   labels.setdefault(C, []).append(idx)
+   neighbors.remove(idx)  # Already been checked. Will be added below
+   for q in neighbors:
+       if visited[q] == 1:
+           continue
+       visited[q] = 1
+       q_neighbors = find_neighbors(data, dist_func, data[q, :], eps)
+       if len(q_neighbors) >= min_pts:
+           neighbors.extend(q_neighbors)  # extend the search
+       labels[C].append(q)
 ```
+
++++
+@title[Full function]
+@span[north]
+The whole shabang
+@spanend
+
+```python
+def dbscan(data, min_pts, eps, dist_func=euclidean):
+   C = 0
+   labels = {}
+   visited = np.zeros(len(data))
+   for idx, point in enumerate(data):
+       if visited[idx] == 1:
+           continue
+       visited[idx] = 1
+       neighbors = find_neighbors(data, dist_func, point, eps)
+       if len(neighbors) < min_pts:
+           labels.setdefault('noise', []).append(idx)
+       else:
+           C += 1
+           labels.setdefault(C, []).append(idx)
+           neighbors.remove(idx)
+           for q in neighbors:
+               if visited[q] == 1:
+                   continue
+               visited[q] = 1
+               q_neighbors = find_neighbors(
+                   data, dist_func, data[q, :], eps)
+               if len(q_neighbors) >= min_pts:
+                   neighbors.extend(q_neighbors)
+               labels[C].append(q)
+
+   return labels
+```
+
+---
+@title[example]
+## Example time
+
+@span[west span-50]
+![](assets/img/raw_circles.png)
+@spanend
+
+@span[east span-50]
+![](assets/img/raw_moons.png)
+@spanend
+
++++
+@title[e.g. k-means]
+
+## K-Means failure
+
+@span[west span-50]
+![](assets/img/kmeans_circles.png)
+@spanend
+
+@span[east span-50]
+![](assets/img/kmeans_moon.png)
+@spanend
+
++++
+@title[e.g. dbscan]
+
+## DBSCAN
+
+@span[west span-50]
+![](assets/img/my_circles.png)
+@spanend
+
+@span[east span-50]
+![](assets/img/my_dbscan.png)
+@spanend
+
++++
+@title[e.g. sci-kit]
+
+## Sci-Kit Learn 
+
+@span[west span-50]
+```python
+import numpy as np
+from sklearn.cluster import DBSCAN
+from sklearn.preprocessing import StandardScaler
+from sklearn.datasets import make_moons
+X, labels_true= make_moons(n_samples=750, shuffle=True, noise=0.11, random_state=42)
+X = StandardScaler().fit_transform(X)
+# Compute DBSCAN
+db = DBSCAN(eps=0.3, min_samples=10).fit(X)
+core_samples_mask = np.zeros_like(db.labels_, dtype=bool)
+core_samples_mask[db.core_sample_indices_] = True
+labels = db.labels_
+# Number of clusters in labels, ignoring noise if present.
+n_clusters_ = len(set(labels)) - (1 if -1 in labels else 0)
+```
+@spanend
+
+@span[east span-50]
+![](assets/img/sk.png)
+@spanend
+
+@span[south-east span-35]
+@size[0.65em](
+Sci-Kit Learn example adapted from
+[here](http://scikit-learn.org/stable/auto_examples/cluster/plot_dbscan.html))
+@spanend
+
+---
+@title[caveats]
+
+## Caveats
+
+  1. DBSCAN is not entirely deterministic
+  2. The quality of DBSCAN depends on the distance measure used in the function regionQuery(P,ε)
+  3. DBSCAN cannot cluster data sets well with large differences in densities
+  4. If the data and scale are not well understood, choosing a meaningful 
+  distance threshold ε can be difficult
+  
+Note: 
+  - border points that are reachable from more than one cluster can be part of either cluster, depending on the order the data are processed. For most data sets and domains, this situation fortunately does not arise often and has little impact on the clustering result: both on core points and noise points, DBSCAN is deterministic. DBSCAN* is a variation that treats border points as noise, and this way achieves a fully deterministic result as well as a more consistent statistical interpretation of density-connected components.
+    - The most common distance metric used is Euclidean distance. Especially for high-dimensional data, this metric can be rendered almost useless due to the so-called "Curse of dimensionality", making it difficult to find an appropriate value for ε. This effect, however, is also present in any other algorithm based on Euclidean distance.
+
+
+ ---
+@title[Future Reading]
+
+## Futher Reading
+
+  -  [DBSCAN Wiki](https://en.wikipedia.org/wiki/DBSCAN)
+  - [Sci-Kit Learn Clustering](http://scikit-learn.org/stable/modules/clustering.html#clustering)
+  - [OPTICS algorithm](https://en.wikipedia.org/wiki/OPTICS_algorithm)
+  - [Hierarchical
+    clustering](https://en.wikipedia.org/wiki/Hierarchical_clustering)
+
+  ---
+@title[end]
+
+# _fin_
 
