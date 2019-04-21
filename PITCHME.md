@@ -64,7 +64,10 @@ https://www.naftaliharris.com/blog/visualizing-dbscan-clustering/
 @title[Overview]
 
 ## Algorithm Overview
+
+@snap[text-left]
 When constructing the DBSCAN algorithm we need four things:
+@snapend
 
 @ul
   - Minimum amount of points (minPts)
@@ -93,11 +96,11 @@ at once will help to save memory.
 We will follow the following ideas:
   
 @ul  
-  1. Pick a point to start with
-  2. Find it's neighbors
-  3. Identify if it is a core point
-  4. Check if its neighbors are core points
-  5. connect the entire neighborhood into a cluster
+  1. Pick a point to start with  
+  2. Find it's neighbors  
+  3. Identify if it is a core point  
+  4. Check if its neighbors are core points  
+  5. connect the entire neighborhood into a cluster  
 @ulend
 
 ---
@@ -113,7 +116,7 @@ An arbitrary but common choice.
 --- 
 @title[init Algorithm]
 
-## Helper Functions
+### Helper Functions
 
 @[1-5]
 @[7-11]
@@ -135,7 +138,7 @@ def find_neighbors(db, dist_func2, p, e):
 +++
 @title[main function]
 
-#### initiate the function and variables
+### initiate the function and variables
 ```
 def dbscan(data, min_pts, eps, dist_func=euclidean):
    """
@@ -153,7 +156,7 @@ inital values and set default distance
 
 @title[for-loop]
 
-#### Track which nodes we have checked
+### Track which nodes we have checked
 
 ```python
 for idx, point in enumerate(data):
@@ -169,11 +172,11 @@ for idx, point in enumerate(data):
 
 @title[if/then]
 
-#### Group the clusters
+### Group the clusters
 @[1,2]
 @[3-6]
 @[7-9]
-@[10-14]
+@[10-16]
 
 ```python
 if len(neighbors) < min_pts:
@@ -197,9 +200,7 @@ else:
 +++
 @title[Full function]
 
-@span[north]  
-@size[1.25em](The whole shabang)
-@spanend
+#### The whole shabang
 
 ```python
 def dbscan(data, min_pts, eps, dist_func=euclidean):
@@ -234,58 +235,46 @@ def dbscan(data, min_pts, eps, dist_func=euclidean):
 @title[example]
 ## Example time
 
-@span[west span-50]
-
+@snap[west span-50]
 ![](assets/img/raw_circles.png)
+@snapend
 
-@spanend
-
-@span[east span-50]
-
+@snap[east span-50]
 ![](assets/img/raw_moons.png)
-
-@spanend
+@snapend
 
 +++
 @title[e.g. k-means]
 
 ## K-Means failure
 
-@span[west span-50]
-
+@snap[west span-50]
 ![](assets/img/kmeans_circles.png)
+@snapend
 
-@spanend
-
-@span[east span-50]
-
+@snap[east span-50]  
 ![](assets/img/kmeans_moon.png)
+@snapend
 
-@spanend
-
-+++
++++  
 @title[e.g. dbscan]
 
 ## DBSCAN
 
-@span[west span-50]
-
+@snap[west span-50]
 ![](assets/img/my_circles.png)
+@snapend  
 
-@spanend
-
-@span[east span-50]
-
+@snap[east span-50]
 ![](assets/img/my_dbscan.png)
+@snapend
 
-@spanend
-
-+++
++++ 
 @title[e.g. sci-kit]
 
 ## Sci-Kit Learn 
 
-@span[west span-50]  
+@snap[west span-50]  
 ```python
 import numpy as np
 from sklearn.cluster import DBSCAN
@@ -301,19 +290,17 @@ labels = db.labels_
 # Number of clusters in labels, ignoring noise if present.
 n_clusters_ = len(set(labels)) - (1 if -1 in labels else 0)
 ```
-@spanend. 
+@snapend 
 
-@span[east span-50]
-
+@snap[east span-50]
 ![](assets/img/sk.png)
+@snapend
 
-@spanend
-
-@span[south-east span-35] 
+@snap[south-east span-35] 
 @size[0.65em](
 Sci-Kit Learn example adapted from
 [here](http://scikit-learn.org/stable/auto_examples/cluster/plot_dbscan.html))  
-@spanend
+@snapend
 
 ---
 @title[caveats]
@@ -344,14 +331,14 @@ Note:
 
 ## Futher Reading
 
-  -  [DBSCAN Wiki](https://en.wikipedia.org/wiki/DBSCAN)
+  - [DBSCAN Wiki](https://en.wikipedia.org/wiki/DBSCAN)
   - [Sci-Kit Learn Clustering](http://scikit-learn.org/stable/modules/clustering.html#clustering)
   - [OPTICS algorithm](https://en.wikipedia.org/wiki/OPTICS_algorithm)
   - [Hierarchical
     clustering](https://en.wikipedia.org/wiki/Hierarchical_clustering)
 
-  ---
+---
+  
 @title[end]
 
 # _fin_
-
