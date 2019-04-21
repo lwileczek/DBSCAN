@@ -8,4 +8,4 @@ description : "Density based clustering and how to do it"
 
 highlight: atom-one-light
 
-chart : true
+charts : true
