@@ -93,7 +93,10 @@ at once will help to save memory.
 @title[overview continued...]
 
 ## Overview Continued
+
+@snap[text-left]
 We will follow the following ideas:
+@snapend
   
 @ul  
   1. Pick a point to start with  
@@ -316,9 +319,8 @@ Silhouette Coefficient: 0.225
 @snapend
 
 @snap[south-east span-35] 
-@size[0.65em](
-Sci-Kit Learn example adapted from
-[here](http://scikit-learn.org/stable/auto_examples/cluster/plot_dbscan.html))  
+@size[0.65em](Sci-Kit Learn example adapted from)
+[here](http://scikit-learn.org/stable/auto_examples/cluster/plot_dbscan.html)
 @snapend
 
 ---
