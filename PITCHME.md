@@ -109,6 +109,7 @@ Eps stands for epsilon, the Greek letter, which is used in mathematics to repres
 An arbitrary but common choice.
 
 ---
+
 @title[intuition]
 
 ## Intuition
@@ -116,6 +117,7 @@ Let's build some Intuition before we start the code
 https://www.naftaliharris.com/blog/visualizing-dbscan-clustering/ 
 
 --- 
+
 @title[init Algorithm]
 
 ### Helper Functions
@@ -301,6 +303,7 @@ n_clusters_ = len(set(labels)) - (1 if -1 in labels else 0)
 ```
 
 +++
+
 @title[sk continue]
 
 @snap[west text-left span-50]
@@ -311,6 +314,7 @@ V-measure: 0.970
 Adjusted Rand Index: 0.987  
 Adjusted Mutual Information: 0.947  
 Silhouette Coefficient: 0.225  
+Time: 0.43s
 @snapend
 
 @snap[east span-50]
