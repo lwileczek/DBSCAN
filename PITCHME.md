@@ -40,7 +40,7 @@ Why I don't like K-Means:
 @snapend
 
 @snap[west text-left span-50]
-unsupervised density-based clustering algorithm focusing on 
+Unsupervised density-based clustering algorithm focusing on 
 the distance between each point and the count of neighbors rather than the distance to a centroid.
 @snapend
 
@@ -52,13 +52,6 @@ the distance between each point and the count of neighbors rather than the dista
 @title[Fromal definition]
 
 Given a set of points in some space, it groups together points that are closely packed together (points with many nearby neighbors), marking as outliers points that lie alone in low-density regions (whose nearest neighbors are too far away). [Wiki](https://en.wikipedia.org/wiki/DBSCAN)
-
----
-@title[intuition]
-
-## Intuition
-Let's build some Intuition before we start the code  
-https://www.naftaliharris.com/blog/visualizing-dbscan-clustering/ 
 
 ---
 @title[Overview]
@@ -106,7 +99,7 @@ We will follow the following ideas:
   5. connect the entire neighborhood into a cluster  
 @ulend
 
----
++++
 
 @title[Fun Fact 0]
 
@@ -115,6 +108,12 @@ We will follow the following ideas:
 Eps stands for epsilon, the Greek letter, which is used in mathematics to represent a region around an object. 
 An arbitrary but common choice.
 
+---
+@title[intuition]
+
+## Intuition
+Let's build some Intuition before we start the code  
+https://www.naftaliharris.com/blog/visualizing-dbscan-clustering/ 
 
 --- 
 @title[init Algorithm]
