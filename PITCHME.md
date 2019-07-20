@@ -103,7 +103,7 @@ We will follow the following ideas:
 
 @title[Fun Fact 0]
 
-### Fun fact time
+## Fun fact time
 
 Eps stands for epsilon, the Greek letter, which is used in mathematics to represent a region around an object. 
 An arbitrary but common choice.
@@ -242,11 +242,11 @@ def dbscan(data, min_pts, eps, dist_func=euclidean):
 @snapend
 
 @snap[west span-50]
-![](assets/img/raw_circles.png)
+![sklearn make circles](assets/img/raw_circles.png)
 @snapend
 
 @snap[east span-50]
-![](assets/img/raw_moons.png)
+![sklearn make moons](assets/img/raw_moons.png)
 @snapend
 
 +++
@@ -257,7 +257,7 @@ def dbscan(data, min_pts, eps, dist_func=euclidean):
 @snapend
 
 @snap[west span-50]
-![](assets/img/kmeans_circles.png)
+![k-means on circles](assets/img/kmeans_circles.png)
 @snapend
 
 @snap[east span-50]  
